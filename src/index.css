@@ -19,23 +19,28 @@
 
 /* Custom font styling */
 body {
-  font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-family:
+    "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .font-serif-sc {
-  font-family: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong", serif;
+  font-family:
+    "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong", serif;
 }
 
 .font-sans-modern {
-  font-family: "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family:
+    "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
 }
 
 .font-mono-date {
   font-family:
-    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
@@ -109,6 +114,23 @@ body {
     margin: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
+  }
+
+  /* 打印时页面不再是滚动容器：scrollbar-gutter 会为滚动条预留约 30px，
+     使 210mm 宽的纸张横向溢出并撑出滚动条，这里一并清掉舞台的溢出与预留 */
+  .a4-stage {
+    display: block !important;
+    overflow: visible !important;
+    scrollbar-gutter: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* 屏幕外壳用 100dvh 撑满视口，而打印时视口高度可能大于纸张高度，
+     会把内容撑出 297mm 之外（多出空白页与纵向滚动条），故改由内容自然撑开 */
+  .a4-app-shell {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
   }
 
   /* 打印时取消屏幕预览的缩放，只输出原始尺寸的纸张 */

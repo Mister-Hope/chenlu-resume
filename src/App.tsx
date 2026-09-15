@@ -14,7 +14,7 @@ export default function App() {
   const resumeData = initialResumeData;
 
   return (
-    <div className="h-dvh overflow-hidden bg-neutral-300 text-neutral-800 flex flex-col font-sans-modern antialiased">
+    <div className="a4-app-shell h-dvh overflow-hidden bg-neutral-300 text-neutral-800 flex flex-col font-sans-modern antialiased">
       {/* Print Control Action (Top Right Only) */}
       <PrintToolbar onPrint={() => window.print()} />
 
