@@ -1,4 +1,4 @@
-import userAvatar from "./avatar.jpg";
+import userAvatar from "./avatar.avif";
 import userLogo from "./logo.png";
 
 export const DEFAULT_AVATAR = userAvatar;
