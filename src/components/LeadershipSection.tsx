@@ -26,7 +26,9 @@ export const LeadershipSection: React.FC<LeadershipSectionProps> = ({ items }) =
               </span>
             </div>
             {item.department && (
-              <p className="text-[11.5px] text-neutral-600 leading-snug pl-1">{item.department}</p>
+              <p className="font-serif-sc font-medium text-neutral-800 text-[11.5px] tracking-wide leading-snug pl-1">
+                {item.department}
+              </p>
             )}
           </div>
         ))}

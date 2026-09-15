@@ -112,7 +112,7 @@ export const initialResumeData: ResumeData = {
       authorship: "第一作者",
       journal: "APC 国际光子学学术会议",
       tier: "国际重要学术会议",
-      description: "受邀作学术汇报交流并收录高水平学术会议成果",
+      description: "作学术汇报交流并收录高水平学术会议成果",
       badgeType: "slate",
     },
     {
