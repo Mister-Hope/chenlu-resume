@@ -99,10 +99,10 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
               <span>资格证书：</span>
             </div>
             <div className="flex items-center gap-1.5 flex-wrap text-neutral-800">
-              {info.certificates.map((cert, idx) => (
+              {info.certificates.map((cert) => (
                 <span
-                  key={idx}
-                  className="bg-neutral-50 border border-neutral-300 px-1.5 rounded font-medium text-[11px]"
+                  key={cert}
+                  className="inline-flex items-center rounded-full bg-nenu-tint px-2 py-[2px] text-[11px] font-medium text-nenu-dark"
                 >
                   {cert}
                 </span>

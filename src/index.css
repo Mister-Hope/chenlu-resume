@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-/* 东北师大官方蓝：品牌色集中定义，改主题只需改这一处 */
+/* 东北师大官方蓝：品牌色集中定义，改主题只需改这一处。
+   主色取自校徽（logo.png 中出现频率最高的色值，占七成以上像素）。 */
 @theme {
-  --color-nenu: #259fc8; /* 主色 */
-  --color-nenu-hover: #1f87ab; /* 主色（悬停） */
-  --color-nenu-dark: #166987; /* 深色文字 */
-  --color-nenu-tint: #f0f9fc; /* 浅色底 */
-  --color-nenu-line: #bce4f2; /* 浅色描边 */
+  --color-nenu: #004386; /* 主色（校徽原色） */
+  --color-nenu-hover: #003972; /* 主色（悬停） */
+  --color-nenu-dark: #00366b; /* 深色文字 */
+  --color-nenu-tint: #edf2f7; /* 浅色底 */
+  --color-nenu-line: #b1c5da; /* 浅色描边 */
 }
 
 @layer base {

@@ -18,7 +18,7 @@ export const HonorsSection: React.FC<HonorsSectionProps> = ({ awards }) => {
             <span className="font-serif-sc font-bold text-neutral-900 tracking-wide flex-shrink-0">
               {category.category}：
             </span>
-            <span className="font-serif-sc text-neutral-800 tracking-wide leading-normal">
+            <span className="font-serif-sc font-medium text-neutral-800 tracking-wide leading-normal">
               {category.items.join("、")}
             </span>
           </div>
