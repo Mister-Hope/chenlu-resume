@@ -21,8 +21,6 @@ export interface EducationItem {
   school: string;
   major: string;
   degree: string;
-  tag?: string;
-  details?: string[];
 }
 
 export interface AwardCategory {
@@ -36,8 +34,6 @@ export interface TeachingExperienceItem {
   role: string;
   period: string;
   description: string;
-  highlights?: string[];
-  tag?: string;
 }
 
 export interface ResearchPaper {
@@ -67,5 +63,3 @@ export interface ResumeData {
   studentWork: StudentWorkItem[];
   selfEvaluation: string[];
 }
-
-export type ThemeColor = "navy" | "classicBlue" | "teal" | "slate";

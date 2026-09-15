@@ -20,7 +20,7 @@ export const TeachingSection: React.FC<TeachingSectionProps> = ({ experiences })
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-neutral-900 text-[12.5px]">{item.institution}</span>
                 <span className="text-neutral-300">｜</span>
-                <span className="font-bold text-[#166987]">{item.role}</span>
+                <span className="font-bold text-nenu-dark">{item.role}</span>
               </div>
               <span className="text-[11.5px] font-medium text-neutral-500 font-mono-date flex-shrink-0 tracking-tight">
                 {item.period}

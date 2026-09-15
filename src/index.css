@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* 东北师大官方蓝：品牌色集中定义，改主题只需改这一处 */
+@theme {
+  --color-nenu: #259fc8; /* 主色 */
+  --color-nenu-hover: #1f87ab; /* 主色（悬停） */
+  --color-nenu-dark: #166987; /* 深色文字 */
+  --color-nenu-tint: #f0f9fc; /* 浅色底 */
+  --color-nenu-line: #bce4f2; /* 浅色描边 */
+}
+
 @layer base {
   @page {
     size: A4 portrait;
@@ -30,8 +39,41 @@ body {
   font-feature-settings: "tnum" 1;
 }
 
-.font-literary {
-  font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+/* A4 纸张容器：屏幕预览尺寸与内边距（打印尺寸由下方 @media print 覆盖） */
+.a4-page-root {
+  box-sizing: border-box;
+  width: 210mm;
+  height: 297mm;
+  min-height: 297mm;
+  max-height: 297mm;
+  padding: 10.5mm 13mm;
+}
+
+/*
+ * A4 缩放舞台（缩放比例由 A4Page 组件计算后写入 --a4-scale）：
+ * .a4-scaler 只占「缩放后」的位置，纸张本体用 transform 等比缩放，
+ * 因此纸张内部排版不会重排，任何屏幕宽度下都是同一页。
+ */
+.a4-scaler {
+  flex: none;
+  min-width: 0;
+  width: calc(210mm * var(--a4-scale, 1));
+  height: calc(297mm * var(--a4-scale, 1));
+}
+
+.a4-scaler > .a4-page-root {
+  transform: scale(var(--a4-scale, 1));
+  transform-origin: top left;
+}
+
+/* 固定宽度预留滚动条位置，避免滚动条的出现/消失反复改变可用宽度 */
+.a4-stage {
+  scrollbar-gutter: stable both-edges;
+}
+
+/* 两侧留白不足以容纳右上角悬浮按钮时，为按钮让出高度，避免遮挡简历抬头 */
+.a4-stage.is-inset {
+  padding-top: 4.5rem;
 }
 
 /* Print specific styles */
@@ -66,6 +108,12 @@ body {
     margin: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
+  }
+
+  /* 打印时取消屏幕预览的缩放，只输出原始尺寸的纸张 */
+  .a4-scaler {
+    width: auto !important;
+    height: auto !important;
   }
 
   .a4-page-root {

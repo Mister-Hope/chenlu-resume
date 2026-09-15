@@ -28,7 +28,7 @@ export const EducationSection: React.FC<EducationSectionProps> = ({ education })
 
             {/* Col 3: Degree / Track */}
             <div>
-              <span className="inline-block font-semibold text-[#166987] bg-[#f0f9fc] px-2 py-0.2 rounded border border-[#bce4f2] text-[11.5px]">
+              <span className="inline-block font-semibold text-nenu-dark bg-nenu-tint px-2 rounded border border-nenu-line text-[11.5px]">
                 {item.degree}
               </span>
             </div>

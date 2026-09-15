@@ -18,19 +18,21 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
           className="h-8 object-contain"
         />
         <div className="flex items-center gap-2 text-[11px] font-semibold">
-          <span className="text-[#166987] bg-[#f0f9fc] px-2 py-0.5 rounded border border-[#bce4f2]">
-            教育部直属高校
-          </span>
-          <span className="text-[#166987] bg-[#f0f9fc] px-2 py-0.5 rounded border border-[#bce4f2]">
-            国家“双一流”建设高校
-          </span>
+          {info.schoolBadges.map((badge) => (
+            <span
+              key={badge}
+              className="text-nenu-dark bg-nenu-tint px-2 py-0.5 rounded border border-nenu-line"
+            >
+              {badge}
+            </span>
+          ))}
         </div>
       </div>
 
       {/* 2. Candidate Profile Row: Photo on Left, Full-Width Details on Right */}
       <div className="flex items-center gap-3.5 pb-2 border-b border-neutral-200">
         {/* Photo: Clean 1-inch portrait, static and crisp */}
-        <div className="w-[88px] h-[120px] flex-shrink-0 rounded overflow-hidden border border-neutral-300 shadow-2xs">
+        <div className="w-[88px] h-[120px] flex-shrink-0 rounded overflow-hidden border border-neutral-300">
           <img
             src={info.photoUrl || DEFAULT_AVATAR}
             alt={info.name}
@@ -51,14 +53,14 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
                 <span className="text-neutral-300">/</span>
                 <span>{info.age}岁</span>
                 <span className="text-neutral-300">/</span>
-                <span className="font-bold text-red-700 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded text-[11px]">
+                <span className="font-bold text-red-700 bg-red-50 border border-red-200 px-1.5 rounded text-[11px]">
                   ★ {info.politicalStatus}
                 </span>
               </div>
             </div>
 
             {/* Target Job Highlight Badge - enlarged text as requested */}
-            <div className="px-3.5 py-1 bg-[#259fc8] text-white rounded text-[14px] font-bold shadow-xs tracking-wide">
+            <div className="px-3.5 py-1 bg-nenu text-white rounded text-[14px] font-bold tracking-wide">
               求职意向：{info.targetPosition}
             </div>
           </div>
@@ -66,7 +68,7 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
           {/* Row 2: University & Track */}
           <div className="text-[12.5px] text-neutral-800 flex items-center gap-2">
             <span className="font-bold text-neutral-900">毕业院校：</span>
-            <span className="font-bold text-[#166987]">{info.university}</span>
+            <span className="font-bold text-nenu-dark">{info.university}</span>
             <span className="text-neutral-300">｜</span>
             <span className="font-medium text-neutral-800">{info.degreeSummary}</span>
           </div>
@@ -74,17 +76,17 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
           {/* Row 3: Contacts (Full width, clear spacing, never truncates!) */}
           <div className="flex items-center gap-5 text-[12px] text-neutral-800 pt-0.5">
             <div className="flex items-center gap-1 flex-shrink-0">
-              <Phone className="w-3.5 h-3.5 text-[#259fc8] flex-shrink-0" />
+              <Phone className="w-3.5 h-3.5 text-nenu flex-shrink-0" />
               <span className="font-bold text-neutral-900">电话：</span>
               <span className="font-medium tracking-wide">{info.phone}</span>
             </div>
             <div className="flex items-center gap-1 flex-shrink-0">
-              <MessageSquare className="w-3.5 h-3.5 text-[#259fc8] flex-shrink-0" />
+              <MessageSquare className="w-3.5 h-3.5 text-nenu flex-shrink-0" />
               <span className="font-bold text-neutral-900">微信：</span>
               <span className="font-medium">{info.wechat}</span>
             </div>
             <div className="flex items-center gap-1 flex-shrink-0">
-              <Mail className="w-3.5 h-3.5 text-[#259fc8] flex-shrink-0" />
+              <Mail className="w-3.5 h-3.5 text-nenu flex-shrink-0" />
               <span className="font-bold text-neutral-900">邮箱：</span>
               <span className="font-medium">{info.email}</span>
             </div>
@@ -100,7 +102,7 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
               {info.certificates.map((cert, idx) => (
                 <span
                   key={idx}
-                  className="bg-neutral-50 border border-neutral-300 px-1.5 py-0.2 rounded font-medium text-[11px]"
+                  className="bg-neutral-50 border border-neutral-300 px-1.5 rounded font-medium text-[11px]"
                 >
                   {cert}
                 </span>
