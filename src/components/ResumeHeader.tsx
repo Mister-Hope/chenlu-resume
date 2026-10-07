@@ -2,6 +2,10 @@ import React from "react";
 import { PersonalInfo } from "../types";
 import { Phone, Mail, MessageSquare, Award } from "lucide-react";
 import { DEFAULT_AVATAR, DEFAULT_LOGO } from "../assets/defaultAssets";
+import qrCodeUrl from "../assets/qr-code.svg";
+
+/** 简历在线地址：二维码内容与它保持一致（改地址时同步重生成 src/assets/qr-code.svg） */
+const ONLINE_RESUME_URL = "https://chenlu.innenu.com/";
 
 interface ResumeHeaderProps {
   info: PersonalInfo;
@@ -10,22 +14,37 @@ interface ResumeHeaderProps {
 export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
   return (
     <header className="mb-2">
-      {/* 1. Top Bar: Official University Logo & National Accreditation */}
-      <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-neutral-200">
-        <img
-          src={info.schoolLogoUrl || DEFAULT_LOGO}
-          alt="东北师范大学"
-          className="h-8 object-contain"
-        />
-        <div className="flex items-center gap-2 text-[11px] font-semibold">
-          {info.schoolBadges.map((badge) => (
-            <span
-              key={badge}
-              className="text-nenu-dark bg-nenu-tint px-2 py-0.5 rounded border border-nenu-line"
-            >
-              {badge}
-            </span>
-          ))}
+      {/* 1. Top Bar: 校徽与资质标签居左，二维码绝对定位在右侧（不撑高页眉、不挤压个人信息区） */}
+      <div className="relative flex items-center justify-between gap-3 pb-1.5 mb-2 border-b border-neutral-200">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <img
+            src={info.schoolLogoUrl || DEFAULT_LOGO}
+            alt="东北师范大学"
+            className="h-8 object-contain flex-shrink-0"
+          />
+          <div className="flex items-center gap-2 text-[11px] font-semibold">
+            {info.schoolBadges.map((badge) => (
+              <span
+                key={badge}
+                className="text-nenu-dark bg-nenu-tint px-2 py-0.5 rounded border border-nenu-line"
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* 右上角二维码：58px ≈ 15.3mm，A4 打印后模块约 0.53mm，向下略微压住页眉分隔线 */}
+        <div className="absolute -top-0.5 right-0 flex items-center gap-1.5">
+          <span className="text-[9px] leading-[11px] text-neutral-500 whitespace-nowrap">
+            扫码看简历
+          </span>
+          <img
+            src={qrCodeUrl}
+            alt={`扫码打开在线简历 ${ONLINE_RESUME_URL}`}
+            title={ONLINE_RESUME_URL}
+            className="w-[58px] h-[58px] flex-shrink-0"
+          />
         </div>
       </div>
 
@@ -43,7 +62,7 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
         {/* Info Area: Stretches across the rest of the page */}
         <div className="flex-1 min-w-0 space-y-1">
           {/* Row 1: Name, Tags, Target Job */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between">
             <div className="flex items-baseline gap-2.5">
               <h1 className="text-[25px] font-bold text-neutral-900 tracking-wider font-serif-sc leading-none">
                 {info.name}
@@ -59,8 +78,8 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
               </div>
             </div>
 
-            {/* Target Job Highlight Badge - enlarged text as requested */}
-            <div className="px-3.5 py-1 bg-nenu text-white rounded text-[14px] font-bold tracking-wide">
+            {/* Target Job Highlight Badge - 为右上角二维码让出位置，整体下移（仍右对齐，不左移） */}
+            <div className="mt-3.5 px-3.5 py-1 bg-nenu text-white rounded text-[14px] font-bold tracking-wide">
               求职意向：{info.targetPosition}
             </div>
           </div>
