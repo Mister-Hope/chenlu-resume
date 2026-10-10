@@ -78,8 +78,8 @@ export const ResumeHeader: React.FC<ResumeHeaderProps> = ({ info }) => {
               </div>
             </div>
 
-            {/* Target Job Highlight Badge - 为右上角二维码让出位置，整体下移（仍右对齐，不左移） */}
-            <div className="mt-3.5 px-3.5 py-1 bg-nenu text-white rounded text-[14px] font-bold tracking-wide">
+            {/* Target Job Highlight Badge - 为右上角二维码让出位置下移，仍右对齐（不左移） */}
+            <div className="mt-6 px-3.5 py-1 bg-nenu text-white rounded text-[14px] font-bold tracking-wide">
               求职意向：{info.targetPosition}
             </div>
           </div>

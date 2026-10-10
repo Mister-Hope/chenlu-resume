@@ -53,8 +53,7 @@ export const ResearchSection: React.FC<ResearchSectionProps> = ({ papers, otherP
         ))}
 
         <div className="pt-0.5 text-[11.5px] text-neutral-700 font-medium flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-nenu flex-shrink-0" />
-          <span>{otherPublications}</span>
+          {otherPublications}
         </div>
       </div>
     </div>

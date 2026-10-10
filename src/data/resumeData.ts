@@ -37,7 +37,13 @@ export const initialResumeData: ResumeData = {
   awards: [
     {
       category: "奖学金",
-      items: ["二等奖学金", "三等奖学金", "优秀学生干部奖学金", "创新创业专项奖学金"],
+      items: [
+        "国家奖学金（2026.10.10）",
+        "二等奖学金",
+        "三等奖学金",
+        "优秀学生干部奖学金",
+        "创新创业专项奖学金",
+      ],
     },
     {
       category: "荣誉称号",
