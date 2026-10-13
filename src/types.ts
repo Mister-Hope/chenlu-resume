@@ -25,6 +25,10 @@ export interface EducationItem {
 
 export interface AwardCategory {
   category: string;
+  /**
+   * 奖项名称。以「 ×N」结尾表示该奖项获得过 N 次（例如「优秀学生干部奖学金 ×2」），
+   * 渲染时会把 ×N 高亮成主题蓝加粗，用于突出重复获奖。
+   */
   items: string[];
 }
 

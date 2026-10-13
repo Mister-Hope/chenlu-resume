@@ -29,7 +29,7 @@ export const TeachingSection: React.FC<TeachingSectionProps> = ({ experiences })
             </div>
 
             {/* Description: 与「个人荣誉」「自我评价」同款衬线正文 */}
-            <p className="font-serif-sc font-medium text-neutral-800 tracking-wide leading-normal pl-1 mt-0.5">
+            <p className="font-serif-sc font-medium text-neutral-800 tracking-wide leading-[1.4] pl-1 mt-0.5">
               {item.description}
             </p>
           </div>
