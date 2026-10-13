@@ -1,7 +1,8 @@
+import { Trophy } from "lucide-react";
 import React from "react";
+
 import { AwardCategory } from "../types";
 import { ResumeSectionHeader } from "./ResumeSectionHeader";
-import { Trophy } from "lucide-react";
 
 interface HonorsSectionProps {
   awards: AwardCategory[];

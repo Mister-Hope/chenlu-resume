@@ -1,6 +1,7 @@
-import React from "react";
-import { ResumeSectionHeader } from "./ResumeSectionHeader";
 import { UserCheck } from "lucide-react";
+import React from "react";
+
+import { ResumeSectionHeader } from "./ResumeSectionHeader";
 
 interface EvaluationSectionProps {
   paragraphs: string[];

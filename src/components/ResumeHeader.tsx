@@ -1,8 +1,9 @@
-import React from "react";
-import { PersonalInfo } from "../types";
 import { Phone, Mail, MessageSquare, Award } from "lucide-react";
+import React from "react";
+
 import { DEFAULT_AVATAR, DEFAULT_LOGO } from "../assets/defaultAssets";
 import qrCodeUrl from "../assets/qr-code.svg";
+import { PersonalInfo } from "../types";
 
 /** 简历在线地址：二维码内容与它保持一致（改地址时同步重生成 src/assets/qr-code.svg） */
 const ONLINE_RESUME_URL = "https://chenlu.innenu.com/";

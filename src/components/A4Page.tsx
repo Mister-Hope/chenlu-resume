@@ -16,8 +16,7 @@ const TOOLBAR_ZONE = 170;
 /**
  * A4 纸张舞台：按可用宽度把整页简历等比缩放。
  *
- * 屏幕够宽（≥ 210mm）时保持原始尺寸，左右留白；屏幕更窄时整张纸等比缩小，
- * 内部排版不重排，因此任何尺寸下都仍然是同一页。
+ * 屏幕够宽（≥ 210mm）时保持原始尺寸，左右留白；屏幕更窄时整张纸等比缩小， 内部排版不重排，因此任何尺寸下都仍然是同一页。
  */
 export const A4Page: React.FC<A4PageProps> = ({ children }) => {
   const stageRef = useRef<HTMLElement>(null);

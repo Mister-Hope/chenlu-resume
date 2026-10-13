@@ -1,5 +1,5 @@
-import { ResumeData } from "../types";
 import { DEFAULT_AVATAR, DEFAULT_LOGO } from "../assets/defaultAssets";
+import { ResumeData } from "../types";
 
 export const initialResumeData: ResumeData = {
   personalInfo: {

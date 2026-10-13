@@ -1,14 +1,15 @@
 import React from "react";
-import { initialResumeData } from "./data/resumeData";
+
 import { A4Page } from "./components/A4Page";
-import { ResumeHeader } from "./components/ResumeHeader";
 import { EducationSection } from "./components/EducationSection";
-import { HonorsSection } from "./components/HonorsSection";
-import { TeachingSection } from "./components/TeachingSection";
-import { ResearchSection } from "./components/ResearchSection";
-import { LeadershipSection } from "./components/LeadershipSection";
 import { EvaluationSection } from "./components/EvaluationSection";
+import { HonorsSection } from "./components/HonorsSection";
+import { LeadershipSection } from "./components/LeadershipSection";
 import { PrintToolbar } from "./components/PrintToolbar";
+import { ResearchSection } from "./components/ResearchSection";
+import { ResumeHeader } from "./components/ResumeHeader";
+import { TeachingSection } from "./components/TeachingSection";
+import { initialResumeData } from "./data/resumeData";
 
 export default function App() {
   const resumeData = initialResumeData;

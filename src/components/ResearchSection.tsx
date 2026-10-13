@@ -1,7 +1,8 @@
+import { Microscope } from "lucide-react";
 import React from "react";
+
 import { ResearchPaper } from "../types";
 import { ResumeSectionHeader } from "./ResumeSectionHeader";
-import { Microscope } from "lucide-react";
 
 interface ResearchSectionProps {
   papers: ResearchPaper[];

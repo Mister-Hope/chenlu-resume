@@ -1,7 +1,8 @@
+import { GraduationCap } from "lucide-react";
 import React from "react";
+
 import { EducationItem } from "../types";
 import { ResumeSectionHeader } from "./ResumeSectionHeader";
-import { GraduationCap } from "lucide-react";
 
 interface EducationSectionProps {
   education: EducationItem[];

@@ -1,5 +1,5 @@
-import React from "react";
 import { Printer } from "lucide-react";
+import React from "react";
 
 interface PrintToolbarProps {
   onPrint: () => void;

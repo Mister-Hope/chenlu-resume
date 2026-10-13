@@ -2,8 +2,8 @@
 /**
  * 按需子集化下载 Google Fonts，生成完全离线的本地字体（无任何 CDN 依赖）。
  *
- * 原理：Google Fonts CSS2 API 的 `text=` 参数会返回「只包含所给字符」的子集字体，
- * 再配合 `wght@400..700` 可变字体轴，每个字体族只需 1 个 woff2 文件即可覆盖全部字重。
+ * 原理：Google Fonts CSS2 API 的 `text=` 参数会返回「只包含所给字符」的子集字体， 再配合 `wght@400..700` 可变字体轴，每个字体族只需 1 个
+ * woff2 文件即可覆盖全部字重。
  *
  * 用法：`pnpm fonts:fetch`
  *
@@ -101,7 +101,7 @@ for (const font of FONTS) {
   results.push({ font, bytes: await fetchFont(font, charset) });
 }
 
-/** woff2 表目录中的「已知表标签」索引表，用于定位 cmap。 */
+/** Woff2 表目录中的「已知表标签」索引表，用于定位 cmap。 */
 const KNOWN_TAGS = [
   "cmap",
   "head",

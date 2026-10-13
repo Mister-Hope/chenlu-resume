@@ -1,7 +1,8 @@
+import { Users } from "lucide-react";
 import React from "react";
+
 import { StudentWorkItem } from "../types";
 import { ResumeSectionHeader } from "./ResumeSectionHeader";
-import { Users } from "lucide-react";
 
 interface LeadershipSectionProps {
   items: StudentWorkItem[];

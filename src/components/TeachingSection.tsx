@@ -1,7 +1,8 @@
+import { BookOpen } from "lucide-react";
 import React from "react";
+
 import { TeachingExperienceItem } from "../types";
 import { ResumeSectionHeader } from "./ResumeSectionHeader";
-import { BookOpen } from "lucide-react";
 
 interface TeachingSectionProps {
   experiences: TeachingExperienceItem[];
