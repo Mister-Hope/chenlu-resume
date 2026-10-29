@@ -1,0 +1,27 @@
+name: Test Docs
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@^24.22.1
+          require-lockfile: true
+
+      - name: Build Docs
+        run: |-
+          pnpm run build

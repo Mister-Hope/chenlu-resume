@@ -1,0 +1,27 @@
+name: Linter Test
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # Only run linter on the main repository
+    # We can not force users to satisfy our linter rules on forks with their configurations
+    if: github.repository == 'Mister-Hope/portfolio-template'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@^24.22.1
+          require-lockfile: true
+
+      - name: Run linter
+        run: pnpm run lint
