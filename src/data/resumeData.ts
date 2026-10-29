@@ -1,7 +1,6 @@
-import { DEFAULT_AVATAR, DEFAULT_LOGO } from "../assets/defaultAssets";
-import type { ResumeData } from "../types";
+import type { ResumeData } from "../types.ts";
 
-export const initialResumeData: ResumeData = {
+export const resumeData: ResumeData = {
   personalInfo: {
     name: "陈璐",
     age: 26,
@@ -13,15 +12,13 @@ export const initialResumeData: ResumeData = {
     phone: "15604480425",
     wechat: "Mistress-Hope",
     email: "chenl987@nenu.edu.cn",
-    certificates: ["高中物理教师资格证", "普通话等级二级甲等", "大学英语六级 (CET-6)"],
-    photoUrl: DEFAULT_AVATAR,
+    certificates: ["高中物理教师资格证", "普通话等级二级甲等", "大学英语六级（CET-6）"],
     schoolBadges: ["教育部直属高校", "国家“双一流”建设高校"],
-    schoolLogoUrl: DEFAULT_LOGO,
   },
   education: [
     {
       id: "edu-1",
-      period: "2021.09 — 2027.06 (预计)",
+      period: "2021.09 — 2027.06（预计）",
       school: "东北师范大学",
       major: "凝聚态物理",
       degree: "硕博连读·推免保送",
@@ -74,7 +71,7 @@ export const initialResumeData: ResumeData = {
     {
       id: "exp-3",
       institution: "北京益微青年公益发展中心",
-      role: "基层支教志愿者 (河南省开封市兰考县)",
+      role: "基层支教志愿者（河南省开封市兰考县）",
       period: "2019 暑期",
       description:
         "深入基层乡村学校开展暑期支教，主讲“趣味物理科普与动手小实验”系列课程，践行师范生从教初心。",
@@ -95,23 +92,23 @@ export const initialResumeData: ResumeData = {
       journal: "Light: Science & Applications",
       tier: "中科院一区 TOP",
       description: "光学领域国际顶刊，入选中国科技期刊卓越行动计划「领军期刊」",
-      badgeType: "gold",
+      level: "top",
     },
     {
       id: "paper-2",
       authorship: "第一作者",
       journal: "Physical Review Research",
       tier: "中科院二区",
-      description: "美国物理学会 (APS) 旗下物理权威刊物",
-      badgeType: "blue",
+      description: "美国物理学会（APS）旗下物理权威刊物",
+      level: "q2",
     },
     {
       id: "paper-3",
       authorship: "第一作者",
       journal: "J. Mater. Chem. C",
       tier: "中科院三区",
-      description: "英国皇家化学会 (RSC) 光功能材料经典期刊",
-      badgeType: "blue",
+      description: "英国皇家化学会（RSC）光功能材料经典期刊",
+      level: "q3",
     },
     {
       id: "paper-4",
@@ -119,7 +116,7 @@ export const initialResumeData: ResumeData = {
       journal: "APC 国际光子学学术会议",
       tier: "国际重要学术会议",
       description: "作学术汇报交流并收录高水平学术会议成果",
-      badgeType: "slate",
+      level: "conference",
     },
     {
       id: "paper-5",
@@ -127,7 +124,7 @@ export const initialResumeData: ResumeData = {
       journal: "National Materials",
       tier: "卓越期刊",
       description: "入选中国科技期刊卓越行动计划高水平重点期刊",
-      badgeType: "slate",
+      level: "excellent",
     },
   ],
   otherPublications: "另以主要合作者身份在知名国际 SCI 刊物署名发表学术论文 5 篇",
@@ -156,7 +153,7 @@ export const initialResumeData: ResumeData = {
   ],
   selfEvaluation: [
     "东北师范大学物理学本硕博贯通培养，中共党员，热爱基础教育事业，具有扎实的物理学科功底与严谨的科学思维；",
-    "具备四年高中物理教学实践与教研备课经验，熟悉高中物理知识体系与高考考查重点，善于启发式与模型化教学;",
+    "具备四年高中物理教学实践与教研备课经验，熟悉高中物理知识体系与高考考查重点，善于启发式与模型化教学；",
     "连续六年担任本科年级长、研究生年级负责人及学生会秘书长，组织协调与沟通表达能力强，富有责任心与亲和力；",
     "作风踏实谦逊，工作敬业负责，愿以从教报国之初心，全力投入高中物理教学与班主任德育管理工作。",
   ],

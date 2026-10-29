@@ -14,7 +14,7 @@ export const CandidateProfile = ({ info }: CandidateProfileProps): ReactElement 
     {/* Photo: Clean 1-inch portrait, static and crisp */}
     <div className="w-[88px] h-[120px] flex-shrink-0 rounded overflow-hidden border border-neutral-300">
       <img
-        src={info.photoUrl || DEFAULT_AVATAR}
+        src={info.photoUrl ?? DEFAULT_AVATAR}
         alt={info.name}
         className="w-full h-full object-cover object-top"
       />
@@ -55,19 +55,19 @@ export const CandidateProfile = ({ info }: CandidateProfileProps): ReactElement 
         <span className="font-medium text-neutral-800">{info.degreeSummary}</span>
       </div>
 
-      {/* Row 3: Contacts (Full width, clear spacing, never truncates!) */}
-      <div className="flex items-center gap-5 text-[12px] text-neutral-800 pt-0.5">
-        <div className="flex items-center gap-1 flex-shrink-0">
+      {/* Row 3: Contacts：允许换行，避免邮箱变长时溢出纸张 */}
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-0.5 text-[12px] text-neutral-800 pt-0.5">
+        <div className="flex items-center gap-1">
           <Phone className="w-3.5 h-3.5 text-nenu flex-shrink-0" />
           <span className="font-bold text-neutral-900">电话：</span>
           <span className="font-medium tracking-wide">{info.phone}</span>
         </div>
-        <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex items-center gap-1">
           <MessageSquare className="w-3.5 h-3.5 text-nenu flex-shrink-0" />
           <span className="font-bold text-neutral-900">微信：</span>
           <span className="font-medium">{info.wechat}</span>
         </div>
-        <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex items-center gap-1">
           <Mail className="w-3.5 h-3.5 text-nenu flex-shrink-0" />
           <span className="font-bold text-neutral-900">邮箱：</span>
           <span className="font-medium">{info.email}</span>

@@ -2,10 +2,8 @@ import type { ReactElement } from "react";
 
 import { DEFAULT_LOGO } from "../assets/defaultAssets";
 import qrCodeUrl from "../assets/qr-code.svg";
+import { SITE_URL } from "../data/siteMeta";
 import type { PersonalInfo } from "../types";
-
-/** 简历在线地址：二维码内容与它保持一致（改地址时同步重生成 src/assets/qr-code.svg） */
-const ONLINE_RESUME_URL = "https://chenlu.innenu.com/";
 
 interface ResumeHeaderBarProps {
   info: PersonalInfo;
@@ -38,13 +36,13 @@ export const ResumeHeaderBar = ({ info }: ResumeHeaderBarProps): ReactElement =>
 
     {/* 右上角二维码：58px ≈ 15.3mm，A4 打印后模块约 0.53mm，向下略微压住页眉分隔线 */}
     <div className="absolute -top-0.5 right-0 flex items-center gap-1.5">
-      <span className="text-[9px] leading-[11px] text-neutral-500 whitespace-nowrap">
+      <span className="text-[10px] leading-[12px] text-neutral-500 whitespace-nowrap">
         扫码看简历
       </span>
       <img
         src={qrCodeUrl}
-        alt={`扫码打开在线简历 ${ONLINE_RESUME_URL}`}
-        title={ONLINE_RESUME_URL}
+        alt={`扫码打开在线简历 ${SITE_URL}`}
+        title={SITE_URL}
         className="w-[58px] h-[58px] flex-shrink-0"
       />
     </div>

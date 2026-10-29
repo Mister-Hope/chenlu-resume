@@ -10,8 +10,10 @@ export interface PersonalInfo {
   wechat: string;
   email: string;
   certificates: string[];
-  photoUrl: string;
+  /** 证件照地址，未提供时回退到内置默认头像 */
+  photoUrl?: string;
   schoolBadges: string[];
+  /** 校徽地址，未提供时回退到内置默认校徽 */
   schoolLogoUrl?: string;
 }
 
@@ -37,13 +39,19 @@ export interface TeachingExperienceItem {
   description: string;
 }
 
+/** 论文 / 成果的级别，仅用于决定右侧标签的配色 */
+export type PaperLevel = "top" | "q2" | "q3" | "excellent" | "conference";
+
 export interface ResearchPaper {
   id: string;
-  authorship: string; // "第一作者" | "共同一作"
+  /** 作者署名情况，直接作为标签文案渲染。常见值：「第一作者」「共同一作」「第二作者」「通讯作者」等， 不限定枚举，方便后续补充其它署名位次。 */
+  authorship: string;
   journal: string;
-  tier: string; // "中科院一区 TOP" | "二区" etc.
+  /** 展示用的级别文案，例如「中科院一区 TOP」「卓越期刊」 */
+  tier: string;
+  /** 级别的语义标识，与 tier 的文案解耦，避免改文案导致样式错位 */
+  level: PaperLevel;
   description: string;
-  badgeType?: "gold" | "blue" | "slate";
 }
 
 export interface StudentWorkItem {

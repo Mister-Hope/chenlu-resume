@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "check": "tsc --noEmit",
     "clean": "rm -rf dist",
     "dev": "vite",
     "fonts:fetch": "node scripts/fetch-fonts.mjs",
