@@ -38,7 +38,7 @@ export const initialResumeData: ResumeData = {
     {
       category: "奖学金",
       items: [
-        "国家奖学金（2026.10.10）",
+        "国家奖学金",
         "二等奖学金",
         "三等奖学金",
         "优秀学生干部奖学金 ×2",
