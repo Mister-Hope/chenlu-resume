@@ -1,5 +1,5 @@
 import { DEFAULT_AVATAR, DEFAULT_LOGO } from "../assets/defaultAssets";
-import { ResumeData } from "../types";
+import type { ResumeData } from "../types";
 
 export const initialResumeData: ResumeData = {
   personalInfo: {
@@ -7,7 +7,7 @@ export const initialResumeData: ResumeData = {
     age: 26,
     gender: "女",
     politicalStatus: "中共党员",
-    targetPosition: "高中物理教师",
+    // targetPosition: "高中物理教师",
     university: "东北师范大学",
     degreeSummary: "本硕博贯通培养（硕博连读）",
     phone: "15604480425",

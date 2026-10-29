@@ -11,11 +11,10 @@
  * 需要重新运行本脚本，否则新字会回退到系统字体（不会显示异常，只是字形不统一）。
  */
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
-import { dirname, extname, join, relative } from "node:path";
-import { fileURLToPath } from "node:url";
+import { extname, join, relative } from "node:path";
 import { brotliDecompressSync } from "node:zlib";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = join(import.meta.dirname, "..");
 const FONT_DIR = join(ROOT, "src/assets/fonts");
 const CSS_FILE = join(ROOT, "src/fonts.css");
 
@@ -28,6 +27,7 @@ const FONTS = [
   { slug: "noto-serif-sc", family: "Noto Serif SC", stack: '"Noto Serif SC"' },
   { slug: "plus-jakarta-sans", family: "Plus Jakarta Sans", stack: '"Plus Jakarta Sans"' },
   { slug: "jetbrains-mono", family: "JetBrains Mono", stack: '"JetBrains Mono"' },
+  // oxlint-disable-next-line oxc/no-map-spread
 ].map((font) => ({
   ...font,
   // 项目用到的字重范围：400 常规 / 500 medium / 600 semibold / 700 bold
@@ -36,11 +36,12 @@ const FONTS = [
 }));
 
 /** 收集项目实际用到的所有可打印字符，作为子集字符集。 */
-function collectCharset() {
+const collectCharset = () => {
   const sources = [];
   const walk = (dir) => {
     for (const name of readdirSync(dir)) {
       const path = join(dir, name);
+
       if (statSync(path).isDirectory()) walk(path);
       else if ([".ts", ".tsx", ".css", ".html"].includes(extname(path))) sources.push(path);
     }
@@ -52,8 +53,11 @@ function collectCharset() {
   const text = sources
     .filter((path) => path !== CSS_FILE)
     .map((path) => readFileSync(path, "utf8"))
-    // 注释不会渲染到页面上，去掉块注释以免把说明文字也算进字符集
-    .map((source) => source.replace(/\/\*[\s\S]*?\*\//g, ""))
+    // 注释不会渲染到页面上，去掉块注释与行注释以免把说明文字也算进字符集
+    // 行注释的判定要求 `//` 前不是冒号，以保留 https:// 这类字符串内容
+    .map((source) =>
+      source.replaceAll(/\/\*[\s\S]*?\*\//gu, "").replaceAll(/(^|[^:])\/\/.*$/gmu, "$1"),
+    )
     .join("\n");
 
   const isPrintable = (codePoint) =>
@@ -64,42 +68,46 @@ function collectCharset() {
     (codePoint >= 0x3400 && codePoint <= 0x9fff); // CJK 汉字
 
   return [...new Set([...text].filter((char) => isPrintable(char.codePointAt(0))))].join("");
-}
+};
 
-/** 请求某个字体族的子集 CSS，并把其中的字体文件下载到本地。 */
-async function fetchFont(font, charset) {
+/**
+ * 请求某个字体族的子集 CSS，并把其中的字体文件下载到本地。
+ *
+ * @param font 字体配置
+ * @param charset 需要包含的字符集
+ * @returns 下载到的字体文件字节数
+ */
+const fetchFont = async (font, charset) => {
   const url =
-    `https://fonts.googleapis.com/css2?family=${font.family.replace(/ /g, "+")}` +
+    `https://fonts.googleapis.com/css2?family=${font.family.replaceAll(" ", "+")}` +
     `:${font.axis}&display=swap&text=${encodeURIComponent(charset)}`;
 
   const response = await fetch(url, { headers: { "User-Agent": UA } });
   if (!response.ok) throw new Error(`${font.family}: CSS 请求失败 (HTTP ${response.status})`);
 
   const css = await response.text();
-  const remote = css.match(/url\((https:[^)]+)\)/)?.[1];
+  const remote = /url\((?<url>https:[^)]+)\)/u.exec(css)?.groups?.url;
   if (!remote) throw new Error(`${font.family}: CSS 中未找到字体文件 URL`);
 
   const fontResponse = await fetch(remote, { headers: { "User-Agent": UA } });
   if (!fontResponse.ok)
     throw new Error(`${font.family}: 字体下载失败 (HTTP ${fontResponse.status})`);
 
-  const { buffer, byteLength } = await fontResponse.arrayBuffer().then((buffer) => ({
-    buffer,
-    byteLength: buffer.byteLength,
+  const { buffer, byteLength } = await fontResponse.arrayBuffer().then((rawBuffer) => ({
+    buffer: rawBuffer,
+    byteLength: rawBuffer.byteLength,
   }));
 
   mkdirSync(FONT_DIR, { recursive: true });
   writeFileSync(join(FONT_DIR, `${font.slug}.woff2`), Buffer.from(buffer));
 
   return byteLength;
-}
+};
 
 const charset = collectCharset();
 const results = [];
 
-for (const font of FONTS) {
-  results.push({ font, bytes: await fetchFont(font, charset) });
-}
+for (const font of FONTS) results.push({ font, bytes: await fetchFont(font, charset) });
 
 /** Woff2 表目录中的「已知表标签」索引表，用于定位 cmap。 */
 const KNOWN_TAGS = [
@@ -168,37 +176,57 @@ const KNOWN_TAGS = [
   "Sill",
 ];
 
+/**
+ * 读取 woff2 中的 Base128 变长整数。
+ *
+ * @param buffer 原始数据
+ * @param start 起始偏移
+ * @returns 解析出的数值与下一个字节的偏移
+ */
 const readBase128 = (buffer, start) => {
   let value = 0;
   let index = start;
-  for (let n = 0; n < 5; n++) {
-    const byte = buffer[index++];
+
+  for (let step = 0; step < 5; step++) {
+    const byte = buffer[index];
+    index += 1;
     value = (value << 7) | (byte & 0x7f);
     if (!(byte & 0x80)) return { value, next: index };
   }
+
   throw new Error("woff2: 非法的 Base128 数值");
 };
 
-/** 解压 woff2（表在 brotli 流中顺序存放），返回各表的偏移与解压后的数据。 */
-function inflate(buffer) {
+/**
+ * 解压 woff2（表在 brotli 流中顺序存放），返回各表的偏移与解压后的数据。
+ *
+ * @param buffer Woff2 原始数据
+ * @returns 表目录与解压后的表数据
+ */
+const inflate = (buffer) => {
   const numTables = buffer.readUInt16BE(12);
   const tables = [];
   let index = 48;
   let offset = 0;
 
-  for (let n = 0; n < numTables; n++) {
-    const flags = buffer[index++];
+  for (let tableIndex = 0; tableIndex < numTables; tableIndex++) {
+    const flags = buffer[index];
+    index += 1;
     const tagIndex = flags & 0x3f;
     let tag;
+
     if (tagIndex === 63) {
       tag = buffer.toString("latin1", index, index + 4);
       index += 4;
-    } else tag = KNOWN_TAGS[tagIndex];
+    } else {
+      tag = KNOWN_TAGS[tagIndex];
+    }
 
     const original = readBase128(buffer, index);
     index = original.next;
 
     let length = original.value;
+
     if ((tag === "glyf" || tag === "loca") && flags >> 6 === 0) {
       const transformed = readBase128(buffer, index);
       index = transformed.next;
@@ -210,39 +238,65 @@ function inflate(buffer) {
   }
 
   return { tables, data: brotliDecompressSync(buffer.subarray(index)) };
-}
+};
 
-/** 读取 cmap（格式 4 / 12）中实际包含的字形码点，用于校验子集覆盖情况。 */
-function readCmap(buffer) {
+/**
+ * 读取 cmap 格式 4（BMP）子表，把码点写入集合。
+ *
+ * @param view Cmap 表数据视图
+ * @param subtable 子表在视图中的偏移
+ * @param codePoints 收集码点的集合
+ */
+const readFormat4 = (view, subtable, codePoints) => {
+  const segments = view.readUInt16BE(subtable + 6) / 2;
+
+  for (let segmentIndex = 0; segmentIndex < segments; segmentIndex++) {
+    const end = view.readUInt16BE(subtable + 14 + segmentIndex * 2);
+    const start = view.readUInt16BE(subtable + 16 + segments * 2 + segmentIndex * 2);
+
+    if (start !== 0xffff) for (let cp = start; cp <= end; cp++) codePoints.add(cp);
+  }
+};
+
+/**
+ * 读取 cmap 格式 12（UCS-4）子表，把码点写入集合。
+ *
+ * @param view Cmap 表数据视图
+ * @param subtable 子表在视图中的偏移
+ * @param codePoints 收集码点的集合
+ */
+const readFormat12 = (view, subtable, codePoints) => {
+  for (let groupIndex = 0; groupIndex < view.readUInt32BE(subtable + 12); groupIndex++) {
+    const base = subtable + 16 + groupIndex * 12;
+    const start = view.readUInt32BE(base);
+    const end = view.readUInt32BE(base + 4);
+
+    for (let cp = start; cp <= end; cp++) codePoints.add(cp);
+  }
+};
+
+/**
+ * 读取 cmap（格式 4 / 12）中实际包含的字形码点，用于校验子集覆盖情况。
+ *
+ * @param buffer Woff2 原始数据
+ * @returns 包含的码点集合
+ */
+const readCmap = (buffer) => {
   const { tables, data } = inflate(buffer);
   const cmap = tables.find((table) => table.tag === "cmap");
   const view = data.subarray(cmap.offset, cmap.offset + cmap.length);
   const codePoints = new Set();
 
-  for (let n = 0; n < view.readUInt16BE(2); n++) {
-    const subtable = view.readUInt32BE(4 + n * 8 + 4);
+  for (let recordIndex = 0; recordIndex < view.readUInt16BE(2); recordIndex++) {
+    const subtable = view.readUInt32BE(4 + recordIndex * 8 + 4);
     const format = view.readUInt16BE(subtable);
 
-    if (format === 4) {
-      const segments = view.readUInt16BE(subtable + 6) / 2;
-      for (let s = 0; s < segments; s++) {
-        const end = view.readUInt16BE(subtable + 14 + s * 2);
-        const start = view.readUInt16BE(subtable + 16 + segments * 2 + s * 2);
-        if (start === 0xffff) continue;
-        for (let cp = start; cp <= end; cp++) codePoints.add(cp);
-      }
-    } else if (format === 12) {
-      for (let g = 0; g < view.readUInt32BE(subtable + 12); g++) {
-        const base = subtable + 16 + g * 12;
-        const start = view.readUInt32BE(base);
-        const end = view.readUInt32BE(base + 4);
-        for (let cp = start; cp <= end; cp++) codePoints.add(cp);
-      }
-    }
+    if (format === 4) readFormat4(view, subtable, codePoints);
+    else if (format === 12) readFormat12(view, subtable, codePoints);
   }
 
   return codePoints;
-}
+};
 
 const blocks = results.map(
   ({ font }) => `@font-face {
@@ -270,16 +324,17 @@ ${blocks.join("\n\n")}
 
 // 校验：每个字符至少要被其中一款字体覆盖，否则浏览器会回退到系统字体。
 const covered = new Set();
-for (const { font } of results) {
+
+for (const { font } of results)
   for (const cp of readCmap(readFileSync(join(FONT_DIR, `${font.slug}.woff2`)))) covered.add(cp);
-}
+
 const missing = [...charset].filter((char) => !covered.has(char.codePointAt(0)));
 
 const total = results.reduce((sum, { bytes }) => sum + bytes, 0);
 console.log(`字符集：${[...charset].length} 个字符`);
-for (const { font, bytes } of results) {
+for (const { font, bytes } of results)
   console.log(`  ${font.family.padEnd(18)} ${(bytes / 1024).toFixed(1).padStart(6)} KB`);
-}
+
 console.log(
   `合计：${(total / 1024).toFixed(1)} KB → ${relative(ROOT, FONT_DIR)} + ${relative(ROOT, CSS_FILE)}`,
 );
