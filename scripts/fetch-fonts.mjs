@@ -11,61 +11,79 @@
  * 需要重新运行本脚本，否则新字会回退到系统字体（不会显示异常，只是字形不统一）。
  */
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
-import { extname, join, relative } from "node:path";
+import path from "node:path";
 import { brotliDecompressSync } from "node:zlib";
 
-const ROOT = join(import.meta.dirname, "..");
-const FONT_DIR = join(ROOT, "src/assets/fonts");
-const CSS_FILE = join(ROOT, "src/fonts.css");
+const ROOT = path.join(import.meta.dirname, "..");
+const FONT_DIR = path.join(ROOT, "src/assets/fonts");
+const CSS_FILE = path.join(ROOT, "src/fonts.css");
 
 /** 现代 Chrome UA：让 Google 返回 woff2 + 可变字体。 */
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
 const FONTS = [
-  { slug: "noto-sans-sc", family: "Noto Sans SC", stack: '"Noto Sans SC"' },
-  { slug: "noto-serif-sc", family: "Noto Serif SC", stack: '"Noto Serif SC"' },
-  { slug: "plus-jakarta-sans", family: "Plus Jakarta Sans", stack: '"Plus Jakarta Sans"' },
-  { slug: "jetbrains-mono", family: "JetBrains Mono", stack: '"JetBrains Mono"' },
-  // oxlint-disable-next-line oxc/no-map-spread
-].map((font) => ({
-  ...font,
-  // 项目用到的字重范围：400 常规 / 500 medium / 600 semibold / 700 bold
+  { slug: "noto-sans-sc", family: "Noto Sans SC" },
+  { slug: "noto-serif-sc", family: "Noto Serif SC" },
+  { slug: "plus-jakarta-sans", family: "Plus Jakarta Sans" },
+  { slug: "jetbrains-mono", family: "JetBrains Mono" },
+].map(({ family, slug }) => ({
+  // 项目用到的字重范围：400 常规 / 700 粗体
   axis: "wght@400..700",
-  face: `"${font.family}"`,
+  face: `"${family}"`,
+  family,
+  slug,
 }));
 
-/** 收集项目实际用到的所有可打印字符，作为子集字符集。 */
+/** 需要收录进字体子集的码点范围：ASCII、拉丁扩展与符号、CJK 标点、全角字符、汉字 */
+const PRINTABLE_RANGES = [
+  [0x20, 0x7e],
+  [0xa0, 0x2bff],
+  [0x3000, 0x303f],
+  [0xff00, 0xffef],
+  [0x3400, 0x9fff],
+];
+
+/**
+ * 判断某个码点是否属于需要收录的字符。
+ *
+ * @param codePoint 待判定的码点
+ * @returns 属于收录范围时返回 true
+ */
+const isPrintable = (codePoint) =>
+  PRINTABLE_RANGES.some(([min, max]) => codePoint >= min && codePoint <= max);
+
+/**
+ * 收集项目实际用到的所有可打印字符，作为子集字符集。
+ *
+ * @returns 去重后的字符集字符串
+ */
 const collectCharset = () => {
   const sources = [];
   const walk = (dir) => {
     for (const name of readdirSync(dir)) {
-      const path = join(dir, name);
+      const filePath = path.join(dir, name);
 
-      if (statSync(path).isDirectory()) walk(path);
-      else if ([".ts", ".tsx", ".css", ".html"].includes(extname(path))) sources.push(path);
+      if (statSync(filePath).isDirectory()) walk(filePath);
+      else if ([".ts", ".tsx", ".css", ".html"].includes(path.extname(filePath)))
+        sources.push(filePath);
     }
   };
 
-  walk(join(ROOT, "src"));
-  sources.push(join(ROOT, "index.html"));
+  walk(path.join(ROOT, "src"));
+  sources.push(path.join(ROOT, "index.html"));
 
   const text = sources
-    .filter((path) => path !== CSS_FILE)
-    .map((path) => readFileSync(path, "utf8"))
+    .filter((filePath) => filePath !== CSS_FILE)
+    .map((filePath) => readFileSync(filePath, "utf8"))
     // 注释不会渲染到页面上，去掉块注释与行注释以免把说明文字也算进字符集
     // 行注释的判定要求 `//` 前不是冒号，以保留 https:// 这类字符串内容
     .map((source) =>
-      source.replaceAll(/\/\*[\s\S]*?\*\//gu, "").replaceAll(/(^|[^:])\/\/.*$/gmu, "$1"),
+      source
+        .replaceAll(/\/\*[\s\S]*?\*\//gu, "")
+        .replaceAll(/(?<prefix>^|[^:])\/\/.*$/gmu, "$<prefix>"),
     )
     .join("\n");
-
-  const isPrintable = (codePoint) =>
-    (codePoint >= 0x20 && codePoint <= 0x7e) || // ASCII
-    (codePoint >= 0xa0 && codePoint <= 0x2bff) || // 拉丁扩展 / 通用标点 / 符号
-    (codePoint >= 0x3000 && codePoint <= 0x303f) || // CJK 标点
-    (codePoint >= 0xff00 && codePoint <= 0xffef) || // 全角字符
-    (codePoint >= 0x3400 && codePoint <= 0x9fff); // CJK 汉字
 
   return [...new Set([...text].filter((char) => isPrintable(char.codePointAt(0))))].join("");
 };
@@ -99,7 +117,7 @@ const fetchFont = async (font, charset) => {
   }));
 
   mkdirSync(FONT_DIR, { recursive: true });
-  writeFileSync(join(FONT_DIR, `${font.slug}.woff2`), Buffer.from(buffer));
+  writeFileSync(path.join(FONT_DIR, `${font.slug}.woff2`), Buffer.from(buffer));
 
   return byteLength;
 };
@@ -325,8 +343,10 @@ ${blocks.join("\n\n")}
 // 校验：每个字符至少要被其中一款字体覆盖，否则浏览器会回退到系统字体。
 const covered = new Set();
 
-for (const { font } of results)
-  for (const cp of readCmap(readFileSync(join(FONT_DIR, `${font.slug}.woff2`)))) covered.add(cp);
+for (const { font } of results) {
+  for (const cp of readCmap(readFileSync(path.join(FONT_DIR, `${font.slug}.woff2`))))
+    covered.add(cp);
+}
 
 const missing = [...charset].filter((char) => !covered.has(char.codePointAt(0)));
 
@@ -336,7 +356,7 @@ for (const { font, bytes } of results)
   console.log(`  ${font.family.padEnd(18)} ${(bytes / 1024).toFixed(1).padStart(6)} KB`);
 
 console.log(
-  `合计：${(total / 1024).toFixed(1)} KB → ${relative(ROOT, FONT_DIR)} + ${relative(ROOT, CSS_FILE)}`,
+  `合计：${(total / 1024).toFixed(1)} KB → ${path.relative(ROOT, FONT_DIR)} + ${path.relative(ROOT, CSS_FILE)}`,
 );
 console.log(
   missing.length
