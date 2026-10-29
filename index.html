@@ -21,10 +21,14 @@
     <meta property="og:title" content="{{SITE_TITLE}}" />
     <meta property="og:description" content="{{SITE_DESCRIPTION}}" />
     <meta property="og:url" content="{{SITE_URL}}" />
-    <!-- 分享大图建议放一张 1200×630 的简历截图，抓取器普遍不认 AVIF -->
+    <meta property="og:image" content="{{SITE_OG_IMAGE}}" />
+    <meta property="og:image:width" content="{{SITE_OG_IMAGE_WIDTH}}" />
+    <meta property="og:image:height" content="{{SITE_OG_IMAGE_HEIGHT}}" />
+    <meta property="og:image:alt" content="{{SITE_TITLE}}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{SITE_TITLE}}" />
     <meta name="twitter:description" content="{{SITE_DESCRIPTION}}" />
+    <meta name="twitter:image" content="{{SITE_OG_IMAGE}}" />
 
     <!-- 字体完全离线：见 src/fonts.css（由 pnpm fonts:fetch 生成），不依赖任何 CDN -->
   </head>

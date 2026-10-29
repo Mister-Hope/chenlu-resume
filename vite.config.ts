@@ -17,6 +17,9 @@ const HTML_TOKENS: Record<string, string> = {
   "{{SITE_TITLE}}": siteMeta.title,
   "{{SITE_DESCRIPTION}}": siteMeta.description,
   "{{SITE_URL}}": siteMeta.url,
+  "{{SITE_OG_IMAGE}}": siteMeta.ogImage,
+  "{{SITE_OG_IMAGE_WIDTH}}": String(siteMeta.ogImageWidth),
+  "{{SITE_OG_IMAGE_HEIGHT}}": String(siteMeta.ogImageHeight),
   "{{SITE_THEME_COLOR}}": siteMeta.themeColor,
 };
 

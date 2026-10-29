@@ -31,9 +31,10 @@ src/index.css                  Tailwind 入口、主题色、A4 纸张与打印�
 src/fonts.css                  由 fonts:fetch 自动生成，勿手改
 src/types.ts                   所有数据类型
 src/data/resumeData.ts         简历正文（唯一内容来源）
-src/data/siteMeta.ts           站点元信息（标题 / 简介 / 地址）
+src/data/siteMeta.ts           站点元信息（标题 / 简介 / 地址 / 分享图）
 src/components/                各板块组件 + A4Page + PrintToolbar
 src/assets/                    头像、校徽、二维码、字体子集
+public/og-image.png            社交平台分享大图（1200×630），构建时原样复制到 dist 根
 scripts/fetch-fonts.mjs        字体子集化下载 + 覆盖校验
 ```
 
@@ -98,6 +99,42 @@ pnpm dlx qrcode -t svg -q 2 -e M -o src/assets/qr-code.svg "https://新地址/"
 ```
 
 二维码用绝对定位挂在页眉右上角，不参与 flex 布局，所以不会撑高页眉、也不会挤窄下方联系方式。旁边的「扫码看简历」文案是 `text-[10px]`，再小打印出来会糊。
+
+## 分享大图
+
+`public/og-image.png` 是微信 / 飞书 / 社交平台转发时的卡片大图，固定 1200×630（宽高比 1.91）。`og:image` 必须是绝对地址，因此 `siteMeta.ogImage` 用 `SITE_URL` 拼出来，不要改成相对路径。
+
+这张图是**简历首屏的截图**，不是代码生成的，所以改了姓名、学校、学位、联系方式或页眉布局后，必须重新截一张，否则分享卡片会和简历对不上。重新生成的步骤：
+
+1. `pnpm dev` 启动站点；
+2. 浏览器视口设为 1200×630，DevTools 里注入下面的样式（把纸张放大到 1120px 宽、顶部对齐，并隐藏打印按钮）；
+3. 等字体加载完成后截图，再用 `sips -Z 1200` 或图像工具缩到 1200×630 覆盖 `public/og-image.png`。
+
+```css
+.no-print {
+  display: none !important;
+}
+html,
+body,
+.a4-app-shell {
+  background: #f5f5f4 !important;
+}
+.a4-stage {
+  padding: 0 !important;
+  align-items: flex-start !important;
+  overflow: hidden !important;
+  scrollbar-gutter: auto !important;
+}
+.a4-scaler {
+  width: calc(210mm * 1.411) !important;
+  height: calc(297mm * 1.411) !important;
+}
+.a4-scaler > .a4-page-root {
+  transform: scale(1.411) !important;
+}
+```
+
+截图里会露出页眉、教育背景、个人荣誉与一部分实践经验，正好是 HR 最关心的部分。别用 AVIF——微信、飞书、Twitter 的抓取器普遍只认 JPEG / PNG。
 
 ## 代码约定
 

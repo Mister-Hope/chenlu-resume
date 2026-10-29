@@ -34,4 +34,9 @@ export const siteMeta = {
   url: SITE_URL,
   /** 浏览器地址栏主题色（与校徽主色一致） */
   themeColor: "#004386",
+  /** 社交平台分享大图，必须是绝对地址；文件位于 public/og-image.png */
+  ogImage: `${SITE_URL}og-image.png`,
+  /** 分享大图尺寸，供抓取器预先排版 */
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
 };
