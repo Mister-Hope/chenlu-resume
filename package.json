@@ -27,7 +27,7 @@
     "@vitejs/plugin-react": "6.3.0",
     "oxc-config-hope": "0.3.15",
     "oxfmt": "0.78.0",
-    "oxlint": "1.90.0",
+    "oxlint": "1.93.0",
     "oxlint-tsgolint": "7.0.2006",
     "tailwindcss": "4.3.5",
     "typescript": "7.0.2",
