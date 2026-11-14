@@ -1,0 +1,178 @@
+import type { ResearchResumeData } from "../types.ts";
+
+/** 科研方向简历：面向高校教职与科研岗位，突出研究方向、论文与学术会议 */
+export const researchResume: ResearchResumeData = {
+  variant: "research",
+  personalInfo: {
+    name: "陈璐",
+    age: 26,
+    gender: "女",
+    politicalStatus: "中共党员",
+    targetPosition: "高校教师",
+    university: "东北师范大学",
+    degreeSummary: "凝聚态物理博士研究生（硕博连读）",
+    phone: "15604480425",
+    wechat: "Mistress-Hope",
+    email: "chenl987@nenu.edu.cn",
+    certificates: ["普通话等级二级甲等", "大学英语六级（CET-6）"],
+    schoolBadges: ["教育部直属高校", "国家“双一流”建设高校"],
+  },
+  education: [
+    {
+      id: "edu-1",
+      period: "2021.09 — 2027.06",
+      school: "东北师范大学",
+      major: "凝聚态物理",
+      degree: "硕博连读·推免保送",
+    },
+    {
+      id: "edu-2",
+      period: "2017.09 — 2021.06",
+      school: "东北师范大学",
+      major: "物理学（师范/理学）",
+      degree: "理学学士",
+    },
+  ],
+  awards: [
+    {
+      category: "奖学金",
+      highlight: ["国家奖学金"],
+      items: [
+        "国家奖学金",
+        "二等奖学金",
+        "三等奖学金",
+        "优秀学生干部奖学金 ×2",
+        "创新创业专项奖学金 ×2",
+      ],
+    },
+    {
+      category: "荣誉称号",
+      items: ["校级优秀学生干部", "校五四优秀团员", "校五四红旗团干部"],
+    },
+    {
+      category: "竞赛与学术",
+      items: [
+        "“互联网+”省级铜奖",
+        "“挑战杯”吉林省三等奖",
+        "中央高校基本科研业务费重点培育项目（负责人）",
+      ],
+    },
+  ],
+  researchProfile: {
+    thesis: "储能发光材料中上转换激发充能的设计及其在光存储领域的应用",
+    directions: ["固体光学", "发光材料光谱学"],
+    highlights: [
+      "上转换非线性充能：可见光写入，实现快速、高分辨率光学存储；",
+      "稀土陷阱调控与波长设计：构建深陷阱信息的近红外读取路径；",
+      "UCL 紫外发射与能量传递：发展安全防伪与多级信息加密。",
+    ],
+  },
+  researchPapers: [
+    {
+      id: "paper-1",
+      authorship: "第一作者",
+      journal: "Light: Science & Applications",
+      tier: "中科院一区 TOP",
+      level: "top",
+      authors: "Lu Chen, Feng Liu, Yi-Chun Liu, et al.",
+      year: "2025",
+      impactFactor: "23.4",
+    },
+    {
+      id: "paper-2",
+      authorship: "第一作者",
+      journal: "Physical Review Research",
+      tier: "中科院二区",
+      level: "q2",
+      authors: "Lu Chen, Bingbing Yang, Feng Liu",
+      year: "2026",
+      impactFactor: "4.2",
+    },
+    {
+      id: "paper-3",
+      authorship: "第一作者",
+      journal: "J. Mater. Chem. C",
+      tier: "中科院三区",
+      level: "q3",
+      authors: "Lu Chen, Jin Chen, Xiao-Jun Wang, et al.",
+      year: "2026",
+      impactFactor: "5.1",
+    },
+    {
+      id: "paper-4",
+      authorship: "共同一作",
+      journal: "National Materials",
+      tier: "卓越期刊",
+      level: "excellent",
+      authors: "Xueqing Liu, Lu Chen, Feng Liu, et al.",
+      year: "2026",
+    },
+  ],
+  publicationSummary: {
+    count: 5,
+    badges: [
+      { label: "中科院一区 TOP", level: "top" },
+      { label: "中科院二区 ×2", level: "q2" },
+      { label: "中科院三区 ×2", level: "q3" },
+    ],
+  },
+  conferences: [
+    {
+      id: "conf-1",
+      name: "中国稀土学会 2026 学术年会",
+      period: "2026",
+      location: "江苏·苏州",
+      role: "参会",
+    },
+    {
+      id: "conf-2",
+      name: "Light Conference 2024（2024 光学国际会议）",
+      period: "2024",
+      location: "吉林·长春",
+      role: "参会",
+    },
+    {
+      id: "conf-3",
+      name: "2024“光·未来”新材料研究生学术论坛",
+      period: "2024",
+      location: "吉林·长春",
+      role: "优秀报告奖",
+    },
+  ],
+  studentWork: [
+    {
+      id: "work-1",
+      period: "2021 — 2023",
+      organization: "东北师范大学物理学院",
+      role: "研究生年级负责人",
+      department: "统筹年级日常学风建设、思政教育与学生管理事务，具备突出的班级组织协调能力",
+    },
+    {
+      id: "work-2",
+      period: "2019 — 2020",
+      organization: "东北师范大学物理学院学生会",
+      role: "学生会秘书长",
+      department: "负责学院大型学术文化节、科技讲座策划统筹及团学评优工作，获评校级优秀干部",
+    },
+    {
+      id: "work-3",
+      period: "2017 — 2021",
+      organization: "东北师范大学物理学院",
+      role: "本科年级长",
+      department: "连续4年担任本科年级长，具备深厚扎实的学生工作与青年德育沟通经验",
+    },
+    {
+      id: "work-4",
+      period: "2017 — 2021",
+      organization: "东北师范大学心理健康中心",
+      role: "朋辈辅导员",
+      department: "连续四年参与本科生心理健康支持工作，开展朋辈谈心与学业适应辅导",
+    },
+  ],
+  selfEvaluation: [
+    "东北师范大学物理学本硕博贯通培养，中共党员，研究方向为固体光学与发光材料光谱学，具备扎实的物理基础与科研能力；",
+    "以第一作者在 Light: Science & Applications、Physical Review Research 等期刊发表论文 3 篇，另以共同一作及主要合作者身份发表多篇，熟悉上转换充能、陷阱调控与光学信息存储研究；",
+    "主持中央高校基本科研业务费重点培育项目，负责选题立项、方案设计、实验实施与结项验收，具备项目统筹与表达能力；",
+    "热爱高校教学与科研，愿将科研训练融入课堂、指导学生开展创新实验，恪守学术规范，长期深耕发光材料与光学存储方向。",
+  ],
+};

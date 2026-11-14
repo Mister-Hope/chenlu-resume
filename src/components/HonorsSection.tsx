@@ -33,10 +33,11 @@ export const HonorsSection = ({ awards }: HonorsSectionProps): ReactElement => (
           <span className="font-serif-sc font-medium text-neutral-800 tracking-wide">
             {category.items.map((item, itemIdx) => {
               const { name, times } = splitTimes(item);
+              const highlighted = category.highlight?.includes(name) ?? false;
               return (
                 <Fragment key={item}>
                   {itemIdx > 0 ? "、" : null}
-                  {name}
+                  <span className={highlighted ? "text-red-700 font-bold" : ""}>{name}</span>
                   {times ? <span className="text-nenu font-bold">×{times}</span> : null}
                 </Fragment>
               );

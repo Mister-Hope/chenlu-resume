@@ -1,18 +1,20 @@
 import { Phone, Mail, MessageSquare, Award } from "lucide-react";
+import { Fragment } from "react";
 import type { ReactElement } from "react";
 
 import { DEFAULT_AVATAR } from "../assets/defaultAssets";
-import type { PersonalInfo } from "../types";
+import type { EducationItem, PersonalInfo } from "../types";
 
 interface CandidateProfileProps {
   info: PersonalInfo;
+  education: EducationItem[];
 }
 
-/** 候选人信息区：证件照在左，姓名 / 学历 / 联系方式 / 资格证书在右 */
-export const CandidateProfile = ({ info }: CandidateProfileProps): ReactElement => (
-  <div className="flex items-center gap-3.5 pb-2 border-b border-neutral-200">
+/** 候选人信息区：证件照在左，姓名 / 学历 / 联系方式 / 资格证书 / 教育背景在右 */
+export const CandidateProfile = ({ info, education }: CandidateProfileProps): ReactElement => (
+  <div className="relative flex items-center gap-3.5 pb-2 border-b border-neutral-200">
     {/* Photo: Clean 1-inch portrait, static and crisp */}
-    <div className="w-[88px] h-[120px] flex-shrink-0 rounded overflow-hidden border border-neutral-300">
+    <div className="w-[100px] h-[136px] flex-shrink-0 rounded overflow-hidden border border-neutral-300">
       <img
         src={info.photoUrl ?? DEFAULT_AVATAR}
         alt={info.name}
@@ -39,9 +41,9 @@ export const CandidateProfile = ({ info }: CandidateProfileProps): ReactElement 
           </div>
         </div>
 
-        {/* 求职意向：为右上角二维码让位而下移，未填写时整个标签不渲染 */}
+        {/* 求职意向：绝对定位，避免撑高姓名行；下移到二维码下方 */}
         {info.targetPosition ? (
-          <div className="mt-6 px-3.5 py-1 bg-nenu text-white rounded text-[14px] font-bold tracking-wide">
+          <div className="absolute top-3 right-0 rounded bg-nenu px-3.5 py-1 text-[14px] font-bold tracking-wide text-white">
             求职意向：{info.targetPosition}
           </div>
         ) : null}
@@ -90,6 +92,23 @@ export const CandidateProfile = ({ info }: CandidateProfileProps): ReactElement 
             </span>
           ))}
         </div>
+      </div>
+
+      {/* Row 5: Education：并入照片右侧，按列对齐两段学历 */}
+      <div className="grid grid-cols-[auto_auto_auto_auto_auto] justify-between items-baseline gap-x-2 gap-y-0.5 border-t border-dashed border-neutral-200 pt-1 text-[12.5px]">
+        {education.map((item, index) => (
+          <Fragment key={item.id}>
+            <span className="text-[12.5px] font-bold text-neutral-900">
+              {index === 0 ? "教育背景" : null}
+            </span>
+            <span className="text-[12.5px] font-bold text-neutral-900">{item.school}</span>
+            <span className="font-semibold text-neutral-800">{item.major}</span>
+            <span className="font-semibold text-nenu-dark">{item.degree}</span>
+            <span className="text-right font-mono-date text-[12.5px] font-medium text-neutral-500 whitespace-nowrap">
+              {item.period}
+            </span>
+          </Fragment>
+        ))}
       </div>
     </div>
   </div>
