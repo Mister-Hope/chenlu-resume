@@ -118,11 +118,11 @@ export const researchResume: ResearchResumeData = {
   },
   conferences: [
     {
-      id: "conf-1",
-      name: "中国稀土学会 2026 学术年会",
-      period: "2026",
-      location: "江苏·苏州",
-      role: "参会",
+      id: "conf-3",
+      name: "2024“光·未来”新材料研究生学术论坛",
+      period: "2024",
+      location: "吉林·长春",
+      role: "优秀报告奖",
     },
     {
       id: "conf-2",
@@ -132,11 +132,11 @@ export const researchResume: ResearchResumeData = {
       role: "参会",
     },
     {
-      id: "conf-3",
-      name: "2024“光·未来”新材料研究生学术论坛",
-      period: "2024",
-      location: "吉林·长春",
-      role: "优秀报告奖",
+      id: "conf-1",
+      name: "中国稀土学会 2026 学术年会",
+      period: "2026",
+      location: "江苏·苏州",
+      role: "参会",
     },
   ],
   studentWork: [
